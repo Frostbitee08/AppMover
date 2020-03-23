@@ -11,7 +11,7 @@ import Security
 
 public enum AppMover {
         
-    public static func moveIfNecessary() {
+    public static func moveIfNecessary(message: String? = nil) {
         let fm = FileManager.default
         guard !Bundle.main.isInstalled,
             let applications = preferredInstallDirectory() else { return }
@@ -29,7 +29,13 @@ public enum AppMover {
         
         let alert = NSAlert()
         alert.messageText = "Move to Applications folder"
-        alert.informativeText = "\(Bundle.main.localizedName) needs to move to your Applications folder in order to work properly."
+        
+        if let text = message {
+            alert.informativeText = text
+        } else {
+            alert.informativeText = "\(Bundle.main.localizedName) needs to move to your Applications folder in order to work properly."
+        }
+        
         if needAuth {
             alert.informativeText.append(" You need to authenticate with your administrator password to complete this step.")
         }
